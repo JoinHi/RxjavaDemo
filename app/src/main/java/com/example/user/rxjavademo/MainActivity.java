@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxAutoCompleteTextView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         click = (TextView) findViewById(R.id.button);
+
+
+
+
+
         mTextView = (TextView) findViewById(R.id.textView);
         mEditText = (EditText) findViewById(R.id.edittext);
 //        test();
@@ -58,6 +67,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void debounce() {
+
+
+        RxTextView.textChanges(mEditText)
+                .debounce(500,TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<CharSequence>() {
+                    @Override
+                    public void accept(CharSequence charSequence) throws Exception {
+
+                    }
+                });
+
+
+
         Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull final ObservableEmitter<String> e) throws Exception {
