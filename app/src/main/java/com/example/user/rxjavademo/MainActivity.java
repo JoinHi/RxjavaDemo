@@ -4,8 +4,12 @@ import android.os.SystemClock;
 import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "-------";
     private Disposable mInterval;
     private TextView click;
+    private EditText mEditText;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         click = (TextView) findViewById(R.id.button);
+        mTextView = (TextView) findViewById(R.id.textView);
+        mEditText = (EditText) findViewById(R.id.edittext);
 //        test();
 //        concatTest();
 //        intervalTest();
@@ -46,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 //        distinct();
 //        last();
 //        reduce();
-        debounce();
+        debounce();//每次onNext后需要间隔固定时间后subscribe才能收到事件，如果再设置的间隔时间内再次发出事件后重新计时
     }
 
     private void debounce() {
@@ -59,19 +67,37 @@ public class MainActivity extends AppCompatActivity {
                         e.onNext("haha");
                     }
                 });
+                mEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        e.onNext(s.toString());
+                    }
+                });
             }
         }).debounce(2,TimeUnit.SECONDS)
                 .filter(new Predicate<String>() {
                     @Override
                     public boolean test(@NonNull String s) throws Exception {
-                        return true;
+
+                        return !TextUtils.isEmpty(s);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {
-                        Toast.makeText(MainActivity.this,"click",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
+                        mTextView.setText(s);
                     }
                 });
 

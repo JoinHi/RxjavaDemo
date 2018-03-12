@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.rxjavademo.MainActivity">
 
+    <EditText
+        android:id="@+id/edittext"
+        android:hint="input"
+        android:layout_width="368dp"
+        android:layout_height="0dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp" />
+
     <TextView
         android:background="#b11e1e"
         android:id="@+id/button"
@@ -16,5 +26,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="354dp"
+        android:layout_height="30dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteY="61dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteX="-133dp" />
 
 </android.support.constraint.ConstraintLayout>
